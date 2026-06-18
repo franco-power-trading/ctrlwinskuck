@@ -339,6 +339,8 @@
             border: none;
             cursor: pointer;
             transition: background 0.2s;
+            font-family: inherit;
+            text-align: center;
         }
 
         .donate-btn:hover {
@@ -361,6 +363,163 @@
             color: #a1a1aa;
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
+        }
+
+        .donate-notice {
+            display: none;
+            position: relative;
+            overflow: hidden;
+            background: repeating-linear-gradient(
+                -45deg,
+                #ffff00,
+                #ffff00 12px,
+                #000 12px,
+                #000 24px
+            );
+            border: 5px solid #ff0000;
+            border-radius: 0;
+            padding: 6px;
+            margin-bottom: 1.25rem;
+            box-shadow:
+                0 0 20px rgba(255, 0, 0, 0.8),
+                0 0 40px rgba(255, 255, 0, 0.4),
+                inset 0 0 30px rgba(255, 0, 0, 0.2);
+            animation: banner-pulse 1.2s ease-in-out infinite;
+        }
+
+        .donate-notice.is-visible {
+            display: block;
+            animation: banner-pop 0.4s ease-out, banner-pulse 1.2s ease-in-out 0.4s infinite;
+        }
+
+        @keyframes banner-pop {
+            0% {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes banner-pulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 20px rgba(255, 0, 0, 0.8),
+                    0 0 40px rgba(255, 255, 0, 0.4),
+                    inset 0 0 30px rgba(255, 0, 0, 0.2);
+                border-color: #ff0000;
+            }
+            50% {
+                box-shadow:
+                    0 0 35px rgba(255, 0, 0, 1),
+                    0 0 60px rgba(255, 255, 0, 0.7),
+                    inset 0 0 40px rgba(255, 0, 0, 0.4);
+                border-color: #ff6600;
+            }
+        }
+
+        .donate-notice-inner {
+            background: #ffff00;
+            border: 3px dashed #ff0000;
+            padding: 1.25rem 1rem 1rem;
+            text-align: center;
+            font-family: Impact, 'Arial Black', sans-serif;
+        }
+
+        .donate-marquee {
+            background: #ff0000;
+            color: #ffff00;
+            font-family: 'Courier New', monospace;
+            font-weight: 900;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 0.35rem 0;
+            margin: -1.25rem -1rem 1rem;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .donate-marquee span {
+            display: inline-block;
+            animation: marquee 12s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .donate-alert-title {
+            display: block;
+            font-size: 1.6rem;
+            color: #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;
+            margin-bottom: 0.75rem;
+            animation: blink 0.8s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .donate-notice-body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #000;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .donate-notice-body .highlight-red {
+            color: #ff0000;
+            font-size: 1.05rem;
+            text-decoration: underline wavy #ff0000;
+        }
+
+        .iban-box {
+            display: block;
+            background: #000;
+            border: 3px solid #ff0000;
+            border-radius: 0;
+            padding: 0.85rem 1rem;
+            margin: 0.85rem auto;
+            max-width: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #00ff00;
+            letter-spacing: 0.08em;
+            word-break: break-all;
+            text-shadow: 0 0 8px #00ff00;
+            animation: iban-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes iban-glow {
+            0%, 100% { text-shadow: 0 0 8px #00ff00; }
+            50% { text-shadow: 0 0 16px #00ff00, 0 0 24px #00ff00; }
+        }
+
+        .donate-disclaimer {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #cc0000;
+            background: #ffe066;
+            border: 2px solid #ff0000;
+            padding: 0.6rem 0.75rem;
+            line-height: 1.45;
+            text-align: left;
+        }
+
+        .donate-disclaimer::before {
+            content: "⚠ ";
+            font-size: 1.1rem;
         }
 
         .small {
@@ -508,9 +667,23 @@
         <div class="donate-section">
             <h3>☕ Ti sta risparmiando tempo?</h3>
             <p>CtrlWinSkuk è gratis e lo rimarrà sempre. Se ti è utile, una piccola donazione aiuta a mantenerlo vivo.</p>
-            <a href="https://www.paypal.com/donate/?hosted_button_id=IL_TUO_BOTTONE_PAYPAL" class="donate-btn" target="_blank">
-                🍕 Offrimi una pizza su PayPal
-            </a>
+            <button type="button" class="donate-btn" id="donate-btn">🍕 Offrimi una pizza su PayPal</button>
+            <div class="donate-notice" id="donate-banner" hidden>
+                <div class="donate-notice-inner">
+                    <div class="donate-marquee">
+                        <span>⚠ ATTENZIONE ⚠ URGENTE ⚠ LEGGERE SUBITO ⚠ DONAZIONI ⚠ ATTENZIONE ⚠ URGENTE ⚠ LEGGERE SUBITO ⚠ DONAZIONI ⚠</span>
+                    </div>
+                    <span class="donate-alert-title">🚨 ATTENZIONE!!! 🚨</span>
+                    <p class="donate-notice-body">
+                        <span class="highlight-red">PAYPAL AL MOMENTO NON FUNZIONA!!!</span><br>
+                        Se vuoi comunque supportare il progetto, l'unica alternativa è il <strong>BONIFICO BANCARIO</strong>:
+                    </p>
+                    <span class="iban-box">IT45D0357601601010005544482</span>
+                    <p class="donate-disclaimer">
+                        ATTENZIONE: è MOLTO PROBABILE che non funzioni nemmeno quello!!! BBVA risulta come BANCA STRANIERA e molti bonifici vengono RIFIUTATI o BLOCCATI. Stiamo cercando una soluzione — intanto GRAZIE per la disponibilità!!!
+                    </p>
+                </div>
+            </div>
         </div>
 
         <p class="small" style="margin-top: 2rem;">
@@ -527,6 +700,16 @@
         Fatto con ☕ per chi vuole cambiare schermo senza complicate combinazioni da tastiera.
     </p>
 </footer>
+
+<script>
+    document.getElementById('donate-btn').addEventListener('click', function () {
+        var banner = document.getElementById('donate-banner');
+        banner.hidden = false;
+        banner.classList.add('is-visible');
+        this.style.display = 'none';
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+</script>
 
 </body>
 </html>
